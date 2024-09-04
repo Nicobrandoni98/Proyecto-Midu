@@ -16,25 +16,58 @@
         border-radius: 50%;
         width: 100px;
       }
+      img.disabled {
+        opacity: 0.3;
+      }
     </style>
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
   </head>
+
   <body>
     <h1>Women in Tech</h1>
     <div id="app"></div>
 
-    <script>
+    <script type="text/babel">
       const app = document.getElementById("app");
-      const Avatar = (params) => {
-        const src = `https://randomuser.me/api/portraits/women/${params.id}.jpg`;
-        return `<picture>
-                    <img src="${src}" alt="" />
-                    ${params.name}
-                </picture>
-            `;
+
+      const useState = React.useState;
+
+      const Avatar = (props) => {
+        const [enabled, setEnabled] = useState(true);
+
+        const src = `https://randomuser.me/api/portraits/women/${props.id}.jpg`;
+
+        const className = enabled ? "" : "disabled";
+
+        return (
+          <picture>
+            <img
+              onClick={() => {
+                setEnabled(!enabled);
+              }}
+              className={className}
+              src={src}
+            />
+            <strong>{props.name}</strong>
+          </picture>
+        );
       };
 
-      app.innerHTML += Avatar ({id: 1, name: "Andrea"})
-      app.innerHTML += Avatar ({id: 3, name: "Manuela"})
+      ReactDOM.render(
+        <div>
+          <Avatar id={1} name="Ana" />
+          <Avatar id={2} name="Lady" />
+        </div>,
+        app
+      );
     </script>
   </body>
 </html>
